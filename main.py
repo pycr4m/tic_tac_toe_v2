@@ -11,7 +11,6 @@ def main():
     punktestand_spieler1 = 0
     punktestand_spieler2 = 0
 
-
     while True:
         spielfeld_ausgeben(brett)
         brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
@@ -20,6 +19,13 @@ def main():
             break
         elif spielende_pruefen(brett, spieler1, spieler2) == 2:
             punktestand_spieler2 += 1
+            break
+        elif spielende_pruefen(brett, spieler1, spieler2) == 3:
+            punktestand_spieler2 += 1
+            punktestand_spieler1 += 1
+            print()
+            print("WOW! Unentschieden!!! ")
+            print("Beide Spieler erhalten 1 Punkt.")
             break
         else:
             continue
@@ -38,6 +44,7 @@ def main():
             runde += 1
             print()
             print("Nun Wechselt der Startpieler!")
+
             platzhalter_spieler = spieler1
             spieler1 = spieler2
             spieler2 = platzhalter_spieler
@@ -75,12 +82,10 @@ def main():
             print("Auf Wiedersehen!")
             break
 
-
 def begruessung():
     print()
     print("Willkommen zu einer neuen Runde Tic Tac Toe!")
     print()
-
 
 def spieler_festlegen():
     print()
@@ -319,7 +324,6 @@ def spielfeld_ausgeben(brett):
     zeile18 = "|"+f1_z5_0+"|"+f2_z5_0+"|"+f3_z5_0+"|"
     zeile19 = "|================================|"
 
-    # print("brett aktualisiert")
     print(f"""
     \t\t{zeile1}
     \t\t{zeile2}
@@ -341,8 +345,6 @@ def spielfeld_ausgeben(brett):
     \t\t{zeile18}
     \t\t{zeile19}
     """)
-
-    return f1_z1_0, f1_z2_0, f1_z3_0, f1_z4_0, f1_z5_0, f2_z1_0, f2_z2_0, f2_z3_0, f2_z4_0, f2_z5_0 ,f3_z1_0, f3_z2_0, f3_z3_0, f3_z4_0, f3_z5_0, f4_z1_0, f4_z2_0, f4_z3_0, f4_z4_0, f4_z5_0, f5_z1_0, f5_z2_0, f5_z3_0, f5_z4_0, f5_z5_0, f6_z1_0, f6_z2_0, f6_z3_0, f6_z4_0, f6_z5_0, f7_z1_0, f7_z2_0, f7_z3_0, f7_z4_0, f7_z5_0, f8_z1_0, f8_z2_0, f8_z3_0, f8_z4_0, f8_z5_0, f9_z1_0, f9_z2_0, f9_z3_0, f9_z4_0, f9_z5_0
 
 def zug_abfragen(brett, zugnummer, spieler1, spieler2):
     zugnummer = zugnummer + 1
@@ -451,7 +453,12 @@ def spielende_pruefen(brett, spieler1, spieler2):
         print()
         print(f"\033[1;1;31mGLÜCKWUNSCH\033[0m!!! \033[1;1;31m{spieler2.title()}\033[0m hat gewonnen! \033[1;1;31mGLÜCKWUNSCH\033[0m!!!")
         return 2
-    else:
-        return 0
+    freie_felder = []
+    for i in brett:
+        if i not in ["X","O"]:
+            freie_felder.append(i)
+    if freie_felder == []:
+        return 3
+
 
 main()
