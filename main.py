@@ -3,9 +3,10 @@ import random
 def main():
     brett = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     zugnummer = 0
-    begruessung()                                # Zeile 20
-    spieler1, spieler2 = spieler_festlegen()     # Zeile 26
-    spieler1, spieler2 = beginner_bestimmen(spieler1, spieler2)       # Zeile 49
+    runde = 1
+    begruessung()
+    spieler1, spieler2 = spieler_festlegen()
+    spieler1, spieler2 = beginner_bestimmen(spieler1, spieler2)
 
     punktestand_spieler1 = 0
     punktestand_spieler2 = 0
@@ -23,15 +24,18 @@ def main():
         else:
             continue
 
+    print()
     print("Aktueller Punktestand:")
-    print(f"{spieler1.title()}: {punktestand_spieler1} Punkte")
-    print(f"{spieler2.title()}: {punktestand_spieler2} Punkte")
+    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+    print()
 
     while True:
         neue_runde = input("Soll eine neue Runde gespielt werden? (Y/n) \t:")
         if neue_runde in ["Y", "y", ""]:
             brett = [1, 2, 3, 4, 5, 6, 7, 8, 9]
             zugnummer = 0
+            runde += 1
             print()
             print("Nun Wechseln der Startpieler!")
             platzhalter_spieler = spieler1
@@ -42,23 +46,28 @@ def main():
             punktestand_spieler1 = punktestand_spieler2
             punktestand_spieler2 = platzhalter_punktestand
 
-            print(f"\t\033[1;1;36m{spieler1.title()}\033[0m erhält \033[1;1;36mX\033[0m als Symbol und beginnt!")
+            print(f"\t\033[1;1;36m{spieler1.title()}\033[0m erhält \033[1;1;36mX\033[0m als Symbol und hat den ersten Zug.")
             print(f"\t\033[1;1;31m{spieler2.title()}\033[0m erhält Symbol \033[1;1;31mO\033[0m und zieht als zweites.")
+            print(f"Runde {runde} beginnt! ")
 
             while True:
                 spielfeld_ausgeben(brett)
                 brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
                 if spielende_pruefen(brett, spieler1, spieler2) == 1:
                     punktestand_spieler1 += 1
+                    print()
                     print("Aktueller Punktestand:")
-                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkte")
-                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkte")
+                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                    print()
                     break
                 elif spielende_pruefen(brett, spieler1, spieler2) == 2:
                     punktestand_spieler2 += 1
+                    print()
                     print("Aktueller Punktestand:")
-                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkte")
-                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkte")
+                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                    print()
                     break
                 else:
                     continue
