@@ -4,87 +4,131 @@ def main():
     brett = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     zugnummer = 0
     runde = 1
-    begruessung()
-    spieler1, spieler2 = spieler_festlegen()
-    spieler1, spieler2 = beginner_bestimmen(spieler1, spieler2)
-    print(f"Runde {runde} beginnt! ")
+    noch_einmal_spielen = "ja"
     punktestand_spieler1 = 0
     punktestand_spieler2 = 0
 
-    while True:
-        spielfeld_ausgeben(brett)
-        brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
-        if spielende_pruefen(brett, spieler1, spieler2) == 1:
-            punktestand_spieler1 += 1
-            break
-        elif spielende_pruefen(brett, spieler1, spieler2) == 2:
-            punktestand_spieler2 += 1
-            break
-        elif spielende_pruefen(brett, spieler1, spieler2) == 3:
-            punktestand_spieler2 += 1
-            punktestand_spieler1 += 1
-            print()
-            print("WOW! Unentschieden!!! ")
-            print("Beide Spieler erhalten 1 Punkt.")
-            break
-        else:
-            continue
+    begruessung()
+    spieler1, spieler2 = spieler_festlegen()
+    if spieler1 == "q" and spieler2 == "q":
+        print()
+        print("Auf Wiedersehen")
+        noch_einmal_spielen = "nein"
 
-    print()
-    print("Aktueller Punktestand:")
-    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
-    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
-    print()
+    if noch_einmal_spielen == "ja":
+        spieler1, spieler2 = beginner_bestimmen(spieler1, spieler2)
+        print(f"Runde {runde} beginnt! ")
 
-    while True:
-        neue_runde = input("Soll eine neue Runde gespielt werden? (Y/n) \t:")
-        if neue_runde in ["Y", "y", ""]:
-            brett = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            zugnummer = 0
-            runde += 1
-            print()
-            print("Nun Wechselt der Startpieler!")
+        while noch_einmal_spielen == "ja":
+            spielfeld_ausgeben(brett)
+            brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
+            if brett == "q" and zugnummer == "q":
+                noch_einmal_spielen = "nein"
+                print()
+                print("Auf Wiedersehen!")
+                break
+            elif spielende_pruefen(brett, spieler1, spieler2) == 1:
+                punktestand_spieler1 += 1
+                print()
+                print("Aktueller Punktestand:")
+                print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                print()
+                break
+            elif spielende_pruefen(brett, spieler1, spieler2) == 2:
+                punktestand_spieler2 += 1
+                print()
+                print("Aktueller Punktestand:")
+                print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                print()
+                break
+            elif spielende_pruefen(brett, spieler1, spieler2) == 3:
+                punktestand_spieler2 += 1
+                punktestand_spieler1 += 1
+                print()
+                print("WOW! \033[1;1;33mUnentschieden\033[0m!!! ")
+                print("Beide Spieler erhalten 1 Punkt.")
+                print()
+                print("Aktueller Punktestand:")
+                print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                print()
+                break
+            else:
+                continue
 
-            platzhalter_spieler = spieler1
-            spieler1 = spieler2
-            spieler2 = platzhalter_spieler
 
-            platzhalter_punktestand = punktestand_spieler1
-            punktestand_spieler1 = punktestand_spieler2
-            punktestand_spieler2 = platzhalter_punktestand
-
-            print(f"\t\033[1;1;36m{spieler1.title()}\033[0m erhält \033[1;1;36mX\033[0m als Symbol und hat den ersten Zug.")
-            print(f"\t\033[1;1;31m{spieler2.title()}\033[0m erhält Symbol \033[1;1;31mO\033[0m und zieht als zweites.")
-            print(f"Runde {runde} beginnt! ")
-
+        while noch_einmal_spielen == "ja":
             while True:
-                spielfeld_ausgeben(brett)
-                brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
-                if spielende_pruefen(brett, spieler1, spieler2) == 1:
-                    punktestand_spieler1 += 1
-                    print()
-                    print("Aktueller Punktestand:")
-                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
-                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
-                    print()
-                    break
-                elif spielende_pruefen(brett, spieler1, spieler2) == 2:
-                    punktestand_spieler2 += 1
-                    print()
-                    print("Aktueller Punktestand:")
-                    print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
-                    print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
-                    print()
+                neue_runde = input("Soll eine neue Runde gespielt werden? (Y/q) \t:")
+                if neue_runde in ["Y", "y", "", "Q", "q"]:
                     break
                 else:
+                    print("Gib \"Y\" für eine neue Runde und \"q\" zum Beenden ein!")
                     continue
-        else:
-            print("Auf Wiedersehen!")
-            break
+
+            if neue_runde in ["Y", "y", ""]:
+                brett = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                zugnummer = 0
+                runde += 1
+                print()
+                print("Nun Wechselt der Startpieler!")
+
+                platzhalter_spieler = spieler1
+                spieler1 = spieler2
+                spieler2 = platzhalter_spieler
+
+                platzhalter_punktestand = punktestand_spieler1
+                punktestand_spieler1 = punktestand_spieler2
+                punktestand_spieler2 = platzhalter_punktestand
+
+                print(f"\t\033[1;1;36m{spieler1.title()}\033[0m erhält \033[1;1;36mX\033[0m als Symbol und hat den ersten Zug.")
+                print(f"\t\033[1;1;31m{spieler2.title()}\033[0m erhält Symbol \033[1;1;31mO\033[0m und zieht als zweites.")
+                print(f"Runde {runde} beginnt! ")
+
+                while True:
+                    spielfeld_ausgeben(brett)
+                    brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
+                    if spielende_pruefen(brett, spieler1, spieler2) == 1:
+                        punktestand_spieler1 += 1
+                        print()
+                        print("Aktueller Punktestand:")
+                        print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                        print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                        print()
+                        break
+                    elif spielende_pruefen(brett, spieler1, spieler2) == 2:
+                        punktestand_spieler2 += 1
+                        print()
+                        print("Aktueller Punktestand:")
+                        print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                        print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                        print()
+                        break
+                    elif spielende_pruefen(brett, spieler1, spieler2) == 3:
+                        punktestand_spieler2 += 1
+                        punktestand_spieler1 += 1
+                        print()
+                        print("WOW! \033[1;1;33mUnentschieden\033[0m!!! ")
+                        print("Beide Spieler erhalten 1 Punkt.")
+                        print()
+                        print("Aktueller Punktestand:")
+                        print(f"{spieler1.title()}: {punktestand_spieler1} Punkt(/e)")
+                        print(f"{spieler2.title()}: {punktestand_spieler2} Punkt(/e)")
+                        print()
+                        break
+                    else:
+                        continue
+            else:
+                print()
+                print("Auf Wiedersehen!")
+                break
 
 def begruessung():
     print()
     print("Willkommen zu einer neuen Runde Tic Tac Toe!")
+    print("(Mit \"q\" kann das Spiel jederzeit verlassen werden.)")
     print()
 
 def spieler_festlegen():
@@ -92,6 +136,8 @@ def spieler_festlegen():
     print("Nun werden Spieler1 und Spieler2 festgelegt:")
     print()
     spieler1 = input(f"Wie lautet der Name vom ersten Spieler? \t: ")
+    if spieler1 == "q" or spieler1 == "Q":
+        return "q","q"
     spieler2 = input(f"Wie lautet der Name vom zweiten Spieler?\t: ")
     while True:
         if spieler2.title == spieler1.title:
@@ -100,6 +146,8 @@ def spieler_festlegen():
             print()
         else:
             break
+    if spieler2 == "q" or spieler2 == "Q":
+        return "q","q"
     print()
     print("SUPER!")
     print()
@@ -165,11 +213,11 @@ def spielfeld_ausgeben(brett):
         f2_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f2_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f2_z1_0 = "\033[1;33m    ooo   \033[0m"
-        f2_z2_0 = "\033[1;33m   o   o  \033[0m"
+        f2_z1_0 = "\033[1;33m   oooo   \033[0m"
+        f2_z2_0 = "\033[1;33m  o    o  \033[0m"
         f2_z3_0 = "\033[1;33m      o   \033[0m"
         f2_z4_0 = "\033[1;33m     o    \033[0m"
-        f2_z5_0 = "\033[1;33m   ooooo  \033[0m"
+        f2_z5_0 = "\033[1;33m  oooooo  \033[0m"
 
     if brett[2] == "X":
         f3_z1_0 = "\033[1;36mooo    ooo\033[0m"
@@ -184,11 +232,11 @@ def spielfeld_ausgeben(brett):
         f3_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f3_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f3_z1_0 = "\033[1;33m    ooo   \033[0m"
-        f3_z2_0 = "\033[1;33m   o   o  \033[0m"
-        f3_z3_0 = "\033[1;33m     oo   \033[0m"
-        f3_z4_0 = "\033[1;33m   o   o  \033[0m"
-        f3_z5_0 = "\033[1;33m    ooo   \033[0m"
+        f3_z1_0 = "\033[1;33m  ooooo   \033[0m"
+        f3_z2_0 = "\033[1;33m o     o  \033[0m"
+        f3_z3_0 = "\033[1;33m    ooo   \033[0m"
+        f3_z4_0 = "\033[1;33m o     o  \033[0m"
+        f3_z5_0 = "\033[1;33m  ooooo   \033[0m"
 
     if brett[3] == "X":
         f4_z1_0 = "\033[1;36mooo    ooo\033[0m"
@@ -203,10 +251,10 @@ def spielfeld_ausgeben(brett):
         f4_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f4_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f4_z1_0 = "\033[1;33m     oo   \033[0m"
-        f4_z2_0 = "\033[1;33m    o o   \033[0m"
-        f4_z3_0 = "\033[1;33m   o  o   \033[0m"
-        f4_z4_0 = "\033[1;33m  o o o o \033[0m"
+        f4_z1_0 = "\033[1;33m    ooo   \033[0m"
+        f4_z2_0 = "\033[1;33m   o  o   \033[0m"
+        f4_z3_0 = "\033[1;33m  o   o   \033[0m"
+        f4_z4_0 = "\033[1;33m oooooooo \033[0m"
         f4_z5_0 = "\033[1;33m      o   \033[0m"
 
     if brett[4] == "X":
@@ -222,11 +270,11 @@ def spielfeld_ausgeben(brett):
         f5_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f5_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f5_z1_0 = "\033[1;33m  ooooo   \033[0m"
+        f5_z1_0 = "\033[1;33m  oooooo  \033[0m"
         f5_z2_0 = "\033[1;33m  o       \033[0m"
-        f5_z3_0 = "\033[1;33m  oooo    \033[0m"
-        f5_z4_0 = "\033[1;33m      o   \033[0m"
-        f5_z5_0 = "\033[1;33m  oooo    \033[0m"
+        f5_z3_0 = "\033[1;33m  ooooo   \033[0m"
+        f5_z4_0 = "\033[1;33m       o  \033[0m"
+        f5_z5_0 = "\033[1;33m  ooooo   \033[0m"
 
     if brett[5] == "X":
         f6_z1_0 = "\033[1;36mooo    ooo\033[0m"
@@ -241,11 +289,11 @@ def spielfeld_ausgeben(brett):
         f6_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f6_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f6_z1_0 = "\033[1;33m   ooooo  \033[0m"
-        f6_z2_0 = "\033[1;33m  o       \033[0m"
-        f6_z3_0 = "\033[1;33m  ooooo   \033[0m"
-        f6_z4_0 = "\033[1;33m  o    o  \033[0m"
-        f6_z5_0 = "\033[1;33m   oooo   \033[0m"
+        f6_z1_0 = "\033[1;33m  oooooo  \033[0m"
+        f6_z2_0 = "\033[1;33m o        \033[0m"
+        f6_z3_0 = "\033[1;33m  oooooo  \033[0m"
+        f6_z4_0 = "\033[1;33m o      o \033[0m"
+        f6_z5_0 = "\033[1;33m  ooooo   \033[0m"
 
     if brett[6] == "X":
         f7_z1_0 = "\033[1;36mooo    ooo\033[0m"
@@ -262,7 +310,7 @@ def spielfeld_ausgeben(brett):
     else:
         f7_z1_0 = "\033[1;33m  ooooooo \033[0m"
         f7_z2_0 = "\033[1;33m      o   \033[0m"
-        f7_z3_0 = "\033[1;33m    ooo   \033[0m"
+        f7_z3_0 = "\033[1;33m   oooo   \033[0m"
         f7_z4_0 = "\033[1;33m    o     \033[0m"
         f7_z5_0 = "\033[1;33m   o      \033[0m"
 
@@ -279,11 +327,11 @@ def spielfeld_ausgeben(brett):
         f8_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f8_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f8_z1_0 = "\033[1;33m   oooo   \033[0m"
-        f8_z2_0 = "\033[1;33m  o    o  \033[0m"
-        f8_z3_0 = "\033[1;33m   oooo   \033[0m"
-        f8_z4_0 = "\033[1;33m  o    o  \033[0m"
-        f8_z5_0 = "\033[1;33m   oooo   \033[0m"
+        f8_z1_0 = "\033[1;33m  oooooo  \033[0m"
+        f8_z2_0 = "\033[1;33m o      o \033[0m"
+        f8_z3_0 = "\033[1;33m  oooooo  \033[0m"
+        f8_z4_0 = "\033[1;33m o      o \033[0m"
+        f8_z5_0 = "\033[1;33m  oooooo  \033[0m"
 
     if brett[8] == "X":
         f9_z1_0 = "\033[1;36mooo    ooo\033[0m"
@@ -298,31 +346,31 @@ def spielfeld_ausgeben(brett):
         f9_z4_0 = "\033[1;31m ooo  ooo \033[0m"
         f9_z5_0 = "\033[1;31m   oooo   \033[0m"
     else:
-        f9_z1_0 = "\033[1;33m    ooo   \033[0m"
-        f9_z2_0 = "\033[1;33m   o   o  \033[0m"
-        f9_z3_0 = "\033[1;33m    o oo  \033[0m"
-        f9_z4_0 = "\033[1;33m       o  \033[0m"
-        f9_z5_0 = "\033[1;33m    ooo   \033[0m"
+        f9_z1_0 = "\033[1;33m  oooooo  \033[0m"
+        f9_z2_0 = "\033[1;33m o      o \033[0m"
+        f9_z3_0 = "\033[1;33m  oooooo  \033[0m"
+        f9_z4_0 = "\033[1;33m        o \033[0m"
+        f9_z5_0 = "\033[1;33m  oooooo  \033[0m"
 
-    zeile1 = "|================================|"
+    zeile1 = "+==========+==========+==========+"
     zeile2 = "|"+f7_z1_0+"|"+f8_z1_0+"|"+f9_z1_0+"|"
     zeile3 = "|"+f7_z2_0+"|"+f8_z2_0+"|"+f9_z2_0+"|"
     zeile4 = "|"+f7_z3_0+"|"+f8_z3_0+"|"+f9_z3_0+"|"
     zeile5 = "|"+f7_z4_0+"|"+f8_z4_0+"|"+f9_z4_0+"|"
     zeile6 = "|"+f7_z5_0+"|"+f8_z5_0+"|"+f9_z5_0+"|"
-    zeile7 = "|================================|"
+    zeile7 = "+==========+==========+==========+"
     zeile8 = "|"+f4_z1_0+"|"+f5_z1_0+"|"+f6_z1_0+"|"
     zeile9 = "|"+f4_z2_0+"|"+f5_z2_0+"|"+f6_z2_0+"|"
     zeile10 = "|"+f4_z3_0+"|"+f5_z3_0+"|"+f6_z3_0+"|"
     zeile11 = "|"+f4_z4_0+"|"+f5_z4_0+"|"+f6_z4_0+"|"
     zeile12 = "|"+f4_z5_0+"|"+f5_z5_0+"|"+f6_z5_0+"|"
-    zeile13 = "|================================|"
+    zeile13 = "+==========+==========+==========+"
     zeile14 = "|"+f1_z1_0+"|"+f2_z1_0+"|"+f3_z1_0+"|"
     zeile15 = "|"+f1_z2_0+"|"+f2_z2_0+"|"+f3_z2_0+"|"
     zeile16 = "|"+f1_z3_0+"|"+f2_z3_0+"|"+f3_z3_0+"|"
     zeile17 = "|"+f1_z4_0+"|"+f2_z4_0+"|"+f3_z4_0+"|"
     zeile18 = "|"+f1_z5_0+"|"+f2_z5_0+"|"+f3_z5_0+"|"
-    zeile19 = "|================================|"
+    zeile19 = "+==========+==========+==========+"
 
     print(f"""
     \t\t{zeile1}
@@ -359,18 +407,23 @@ def zug_abfragen(brett, zugnummer, spieler1, spieler2):
             freie_felder.append(i)
 
     while True:
-        zug = input(f"Welches Feld wählst Du?\t:")
-        if int(zug) in freie_felder and zugnummer in [1, 3, 5, 7, 9]:
-            brett[int(zug)-1] = "X"
-            # print(f"X auf Feld {zug} für Zug Nummer {zugnummer} eingetragen.")
-            return brett, zugnummer
-        elif int(zug) in freie_felder and zugnummer in [2, 4, 6, 8]:
-            brett[int(zug)-1] = "O"
-            # print(f"O auf Feld {zug} für Zug Nummer {zugnummer} eingetragen.")
-            return brett, zugnummer
-        else:
+        try:
+            zug = input(f"Welches Feld wählst Du?\t:")
+            if str(zug) == "q" or zug == "Q":
+                return "q", "q"
+            elif int(zug) in freie_felder and zugnummer in [1, 3, 5, 7, 9]:
+                brett[int(zug)-1] = "X"
+                # print(f"X auf Feld {zug} für Zug Nummer {zugnummer} eingetragen.")
+                return brett, zugnummer
+            elif int(zug) in freie_felder and zugnummer in [2, 4, 6, 8]:
+                brett[int(zug)-1] = "O"
+                # print(f"O auf Feld {zug} für Zug Nummer {zugnummer} eingetragen.")
+                return brett, zugnummer
+            else:
+                print(f"Wähle ein freies Feld aus: {freie_felder}")
+                continue
+        except ValueError:
             print(f"Wähle ein freies Feld aus: {freie_felder}")
-            continue
 
 def spielende_pruefen(brett, spieler1, spieler2):
     if brett[0] == "X" and brett[1] == "X" and brett[2] == "X":
