@@ -90,7 +90,12 @@ def main():
                 while True:
                     spielfeld_ausgeben(brett)
                     brett, zugnummer = zug_abfragen(brett, zugnummer, spieler1, spieler2)
-                    if spielende_pruefen(brett, spieler1, spieler2) == 1:
+                    if brett == "q" and zugnummer == "q":
+                                                        noch_einmal_spielen = "nein"
+                                                        print()
+                                                        print("Auf Wiedersehen!")
+                                                        break
+                    elif spielende_pruefen(brett, spieler1, spieler2) == 1:
                         punktestand_spieler1 += 1
                         print()
                         print("Aktueller Punktestand:")
